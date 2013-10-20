@@ -1,5 +1,5 @@
 LDLIBS=-lSDLmain -lSDL -lGL -lSDL_image
-OPTS=-pedantic -Wall -Wextra
+OPTS=-std=c99 -pedantic -Wall -Wextra
 SRCS= main.c
 
 game:
