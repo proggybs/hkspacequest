@@ -3,7 +3,7 @@
 
 #include <GL/gl.h>
 
-#define COMPONENT_COUNT 5
+#define COMPONENT_COUNT 6
 #define COMPONENT_ENABLED 1
 #define COMPONENT_DISABLED 0
 
@@ -12,6 +12,7 @@ const unsigned int COMPONENT_POSITION;
 const unsigned int COMPONENT_VELOCITY;
 const unsigned int COMPONENT_SPRITE;
 const unsigned int COMPONENT_INPUT;
+const unsigned int COMPONENT_FRAMES;
 
 unsigned int SystemMask[COMPONENT_COUNT];
 

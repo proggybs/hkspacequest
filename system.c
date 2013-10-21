@@ -16,13 +16,7 @@ void runSystem(System *system, World *world)
 void renderFunction(World *world, unsigned int entity)
 {
   Position *p = &(world->position[entity]);
-  /*Sprite *s = &(world->sprite[entity]);*/
-
-  /*
-    glBindTexture(GL_TEXTURE_2D, s->texture);
-    glEnable(GL_TEXTURE_2D);
-    glTexCoord2i(0, 0);
-  */
+  
   glPushMatrix();
   glBegin(GL_QUADS);
     glColor3f(1.0, 1.0, 0.5);
@@ -34,7 +28,6 @@ void renderFunction(World *world, unsigned int entity)
     glColor3f(0.5, 0.5, 0.5);
   glVertex2f(p->x, p->y + p->h);
   glEnd();
-  /*glDisable(GL_TEXTURE_2D );*/
   glPopMatrix();
   glFlush();
 }
@@ -55,6 +48,9 @@ void playerControlFunction(World *world, unsigned int entity)
   
   if(!i->keyRight && !i->keyLeft)
     v->x = 0.0f;
+  
+  if(i->keyFire)
+    createBlaster(world, p->x, p->y - 20, 10.0f, 20.0f, 0.0f, -10.0f, 4); 
 }
 
 void movementFunction(World *world, unsigned int entity)
