@@ -1,4 +1,5 @@
 #include <SDL/SDL.h>
+#include <SDL/SDL_ttf.h>
 #include <GL/gl.h>
 #include "entity.h"
 #include "system.h"
@@ -39,15 +40,72 @@ void processKeypresses(Uint8 *keys, World *world, unsigned int entity)
   world->input[entity].keyFire = keys[SDLK_SPACE];
 }
 
+int getFontTexture(char* text)
+{
+  SDL_Color textColor = { 55, 255, 5 };
+  TTF_Font *font = TTF_OpenFont("FreeSans.ttf", 92);
+  SDL_Surface *surface = TTF_RenderText_Blended(font, text, textColor);
+  int colors = surface->format->BytesPerPixel;
+  int format;
+  GLuint texture;
+  
+  if(colors == 4)
+  {
+    if(surface->format->Rmask == 0x000000ff)
+      format = GL_RGBA;
+    else
+      format = GL_BGRA;
+  }
+  else
+  {
+    if(surface->format->Rmask == 0x000000ff)
+      format = GL_RGB;
+    else
+      format = GL_BGR;
+  }
+
+  glGenTextures(1, &texture);
+  glBindTexture(GL_TEXTURE_2D, texture);
+  glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+  glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+  glTexImage2D(GL_TEXTURE_2D, 0, colors, surface->w, surface->h, 0, format, GL_UNSIGNED_BYTE, surface->pixels);
+  SDL_FreeSurface(surface);
+  TTF_CloseFont(font);
+  return texture;
+}
+
+void drawFont(char* text)
+{
+  int texture = getFontTexture(text);
+  glBindTexture(GL_TEXTURE_2D, texture);
+  glEnable(GL_TEXTURE_2D);
+  glColor3f(1.0, 1.0, 1.0);
+  glPushMatrix();
+  glBegin(GL_QUADS);
+  glTexCoord2i(0, 0);
+  glVertex2f(50, 500);
+  glTexCoord2i(1, 0);
+  glVertex2f(150, 500);
+  glTexCoord2i(1, 1);
+  glVertex2f(150, 530);
+  glTexCoord2i(0, 1);
+  glVertex2f(50, 530);
+  glEnd();
+  glDisable(GL_TEXTURE_2D );
+  glPopMatrix();
+  glFlush();
+}
+
+
 int main(void)
 {
   SDL_Init(SDL_INIT_EVERYTHING);
-  SDL_SetVideoMode(WINDOW_WIDTH, WINDOW_HEIGHT, 32, SDL_SWSURFACE|SDL_OPENGL);
+  TTF_Init();
+  SDL_Surface *screen = SDL_SetVideoMode(WINDOW_WIDTH, WINDOW_HEIGHT, 32, SDL_SWSURFACE|SDL_OPENGL);
   glInit();
 
   int isRunning = 1;
   Uint8 *keys = SDL_GetKeyState(NULL);
-  Uint32 start;
 
   World world;
   System render, player, movement;
@@ -72,6 +130,8 @@ int main(void)
   movement.function = &movementFunction;
   memcpy(&movement.mask, &movementComps, sizeof(movementComps));
 
+  Uint32 start;
+  Uint32 last = 1;
   while(isRunning)
   {
     start = SDL_GetTicks();
@@ -79,18 +139,22 @@ int main(void)
     runGameEvents(&isRunning);
     processKeypresses(keys, &world, hkship);
 
-
     runSystem(&player, &world);
     runSystem(&movement, &world);
     
     glClear(GL_COLOR_BUFFER_BIT);
     runSystem(&render, &world);
+    char temp[8];
+    sprintf(temp, "FPS: %d", (1000/last) ); 
+    drawFont(temp);
     SDL_GL_SwapBuffers();
 
     if(1000/60 > (SDL_GetTicks() - start))
       SDL_Delay(1000/60 - (SDL_GetTicks() - start));
+    last = (SDL_GetTicks() - start);
   }
 
+  TTF_Quit();
   SDL_Quit();
   return 0;
 }

@@ -1,4 +1,4 @@
-LDLIBS=-lSDLmain -lSDL -lGL -lSDL_image
+LDLIBS=-lSDLmain -lSDL -lGL -lSDL_image -lSDL_ttf
 OPTS=-std=c99 -pedantic -Wall -Wextra 
 SRCS=main.c component.c entity.c system.c texture.c
 
