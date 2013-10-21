@@ -1,21 +1,23 @@
 #include "entity.h"
 #include "stdio.h"
 #include "texture.h"
+#include "settings.h"
 
 unsigned int createEntity(World *world)
 {
   unsigned int entity;
   
-  for(entity = 0; entity < ENTITY_COUNT; ++entity)
+  for(entity = 1; entity < ENTITY_COUNT; ++entity)
   {
     if(getMask(&world->mask[entity], COMPONENT_NONE))
     {
       setMask(&world->mask[entity], COMPONENT_NONE, COMPONENT_DISABLED);
+      printf("created entity %i\n", entity);
       return entity;
     }
   }
 
-  printf("Error! No more entities left! Max is %d", ENTITY_COUNT);
+  printf("Error! No more entities left! Max is %d\n", ENTITY_COUNT);
   return ENTITY_COUNT;
 }
 
