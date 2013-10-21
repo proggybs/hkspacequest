@@ -1,8 +1,9 @@
 #include "component.h"
 
 const unsigned int COMPONENT_NONE = 0;
-const unsigned int COMPONENT_DISPLACEMENT = 1;
+const unsigned int COMPONENT_POSITION = 1;
 const unsigned int COMPONENT_VELOCITY = 2;
+const unsigned int COMPONENT_SPRITE = 3;
 
 unsigned int checkMask(unsigned int (*sm)[], unsigned int msize, unsigned int (*em)[COMPONENT_COUNT])
 {

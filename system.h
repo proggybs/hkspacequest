@@ -14,5 +14,6 @@ typedef struct
 } System;
 
 void runSystem(System *system, World *world);
+void renderFunction(World *world, unsigned int entity);
 
 #endif
