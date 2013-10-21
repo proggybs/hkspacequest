@@ -6,22 +6,16 @@
 
 void runSystem(System *system, World *world)
 {
-  puts("going to run system...");
   unsigned int entity;
   for(entity = 0; entity < ENTITY_COUNT; ++entity)
     if(checkMask(&system->mask, system->maskCount, &world->mask[entity]))
       system->function(world, entity);
-
-  puts("running...");
 }
 
 void renderFunction(World *world, unsigned int entity)
 {
-  puts("here?");
   Position *p = &(world->position[entity]);
   Sprite *s = &(world->sprite[entity]);
-
-  puts("are we getting here?");
 
   glBindTexture(GL_TEXTURE_2D, s->texture);
   glEnable(GL_TEXTURE_2D);
@@ -40,6 +34,4 @@ void renderFunction(World *world, unsigned int entity)
   glDisable(GL_TEXTURE_2D );
   glPopMatrix();
   glFlush();
-
-  puts("or here?");
 }
