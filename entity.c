@@ -56,7 +56,7 @@ unsigned int createHKShip(World *world, float x, float y, float w, float h, floa
   return entity;
 }
 
-unsigned int createBlaster(World *world, float x, float y, float w, float h, float vx, float vy, int frames)
+unsigned int createBlaster(World *world, float x, float y, float w, float h, float vx, float vy, int maxDuration)
 {
   unsigned int entity = createEntity(world);
 
@@ -72,7 +72,8 @@ unsigned int createBlaster(World *world, float x, float y, float w, float h, flo
   world->velocity[entity].x = vx;
   world->velocity[entity].y = vy;
 
-  world->frames[entity] = frames;
+  world->maxDuration[entity].max = maxDuration;
+  world->maxDuration[entity].current = 0;
 
   return entity;
 }

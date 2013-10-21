@@ -9,8 +9,20 @@ void runSystem(System *system, World *world)
 {
   unsigned int entity;
   for(entity = 0; entity < ENTITY_COUNT; ++entity)
-    if(checkMask(&system->mask, system->maskCount, &world->mask[entity]))
+  {
+    int check = 0;
+    for(unsigned int x = 0; x < system->maskCount; ++x)
+    {
+      check = 1;
+      if((world->mask[entity][x] & system->mask[x]) == COMPONENT_ENABLED)
+        continue;
+      else
+        break;
+    }
+
+    if(check)
       system->function(world, entity);
+  }
 }
 
 void renderFunction(World *world, unsigned int entity)
@@ -60,4 +72,14 @@ void movementFunction(World *world, unsigned int entity)
 
   p->x += v->x;
   p->y += v->y;
+}
+
+
+void maxDurationFunction(World *world, unsigned int entity)
+{
+  puts("called\n");
+  MaxDuration *md = &(world->maxDuration[entity]);
+
+  if(md->current >= md->max)
+    destroyEntity(world, entity);
 }

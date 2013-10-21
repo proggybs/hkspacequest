@@ -3,7 +3,7 @@
 
 #include "component.h"
 
-#define ENTITY_COUNT 100
+#define ENTITY_COUNT 10
 
 typedef struct
 {
@@ -13,7 +13,7 @@ typedef struct
   Velocity velocity[ENTITY_COUNT];
   Sprite sprite[ENTITY_COUNT];
   Input input[ENTITY_COUNT];
-  unsigned int frames[ENTITY_COUNT];
+  MaxDuration maxDuration[ENTITY_COUNT];
 } World;
 
 unsigned int createEntity(World *world);

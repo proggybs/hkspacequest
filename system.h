@@ -17,5 +17,5 @@ void runSystem(System *system, World *world);
 void renderFunction(World *world, unsigned int entity);
 void playerControlFunction(World *world, unsigned int entity);
 void movementFunction(World *world, unsigned int entity);
-
+void maxDurationFunction(World *world, unsigned int entity);
 #endif

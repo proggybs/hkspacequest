@@ -106,7 +106,7 @@ int main(void)
   Uint8 *keys = SDL_GetKeyState(NULL);
 
   World world;
-  System render, player, movement;
+  System render, player, movement, maxDuration;
 
   memset(&world, 0, sizeof(world));
   initializeWorld(&world);
@@ -128,6 +128,11 @@ int main(void)
   movement.function = &movementFunction;
   memcpy(&movement.mask, &movementComps, sizeof(movementComps));
 
+  unsigned int maxDurationComps[1] = {COMPONENT_MAX_DURATION};
+  maxDuration.maskCount = 1;
+  maxDuration.function = &maxDurationFunction;
+  memcpy(&maxDuration.mask, &maxDurationComps, sizeof(maxDurationComps));
+
   Uint32 start;
   Uint32 last = 1;
   while(isRunning)
@@ -146,6 +151,7 @@ int main(void)
     sprintf(temp, "FPS: %d", (1000/last) ); 
     drawFont(temp);
     SDL_GL_SwapBuffers();
+    runSystem(&maxDuration, &world);
 
     if(1000/60 > (SDL_GetTicks() - start))
       SDL_Delay(1000/60 - (SDL_GetTicks() - start));
