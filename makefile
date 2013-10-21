@@ -1,7 +1,6 @@
 LDLIBS=-lSDLmain -lSDL -lGL -lSDL_image
-OPTS=-std=c99 
-IGNORES=-isystem /usr/include/gl
+OPTS=-std=c99 -pedantic -Wall -Wextra 
 SRCS=main.c component.c entity.c system.c texture.c
 
 game:
-	gcc $(OPTS) $(IGNORES) -o hkspacequest $(SRCS) $(LDLIBS)
+	gcc $(OPTS) -o hkspacequest $(SRCS) $(LDLIBS)

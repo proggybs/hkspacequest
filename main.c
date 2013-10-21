@@ -35,24 +35,25 @@ void runGameEvents(int *isRunning)
 int main(void)
 {
   SDL_Init(SDL_INIT_EVERYTHING);
-  SDL_Surface *screen = SDL_SetVideoMode(WINDOW_WIDTH, WINDOW_HEIGHT, 32, SDL_SWSURFACE|SDL_OPENGL);
+  SDL_SetVideoMode(WINDOW_WIDTH, WINDOW_HEIGHT, 32, SDL_SWSURFACE|SDL_OPENGL);
   glInit();
 
   int isRunning = 1;
   Uint32 start;
 
   World world;
- System render;
-
-  unsigned int hkship;
+  System render;
 
   memset(&world, 0, sizeof(world));
   initializeWorld(&world);
-  hkship = createHKShip(&world, (WINDOW_WIDTH/2 - 25), (WINDOW_HEIGHT - 60), 50.0f, 40.0f, 0.0f, 0.0f, "hkship1.png");
+
+  createHKShip(&world, (WINDOW_WIDTH/2 - 25), (WINDOW_HEIGHT - 60), 50.0f, 40.0f, 0.0f, 0.0f, "hkship1.png");
+
   unsigned int comps[2] = {COMPONENT_POSITION, COMPONENT_SPRITE};
   render.maskCount = 2;
   render.function = &renderFunction;
   memcpy(&render.mask, &comps, sizeof(comps)); 
+
   while(isRunning)
   {
     start = SDL_GetTicks();
