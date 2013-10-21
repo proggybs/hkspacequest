@@ -1,11 +1,9 @@
 #include <SDL/SDL.h>
 #include <SDL/SDL_ttf.h>
 #include <GL/gl.h>
+#include "settings.h"
 #include "entity.h"
 #include "system.h"
-
-#define WINDOW_WIDTH 800
-#define WINDOW_HEIGHT 600
 
 void glInit()
 {
@@ -120,8 +118,8 @@ int main(void)
   render.function = &renderFunction;
   memcpy(&render.mask, &renderComps, sizeof(renderComps)); 
 
-  unsigned int playerComps[2] = {COMPONENT_INPUT, COMPONENT_VELOCITY};
-  player.maskCount = 2;
+  unsigned int playerComps[3] = {COMPONENT_INPUT, COMPONENT_POSITION, COMPONENT_VELOCITY};
+  player.maskCount = 3;
   player.function = &playerControlFunction;
   memcpy(&player.mask, &playerComps, sizeof(playerComps));
 

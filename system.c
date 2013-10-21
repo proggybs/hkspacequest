@@ -1,3 +1,4 @@
+#include "settings.h"
 #include "system.h"
 #include "component.h"
 #include "entity.h"
@@ -41,15 +42,18 @@ void renderFunction(World *world, unsigned int entity)
 void playerControlFunction(World *world, unsigned int entity)
 {
   Input *i = &(world->input[entity]);
+  Position *p = &(world->position[entity]);
   Velocity *v = &(world->velocity[entity]);
 
-  if(i->keyLeft)
-    v->x = -10.0f;
+  v->x = 0.0f;
+
+  if(i->keyLeft && (p->x > 10))
+      v->x = -10.0f;
   
-  if(i->keyRight)
-    v->x = 10.0f;
+  if(i->keyRight && (p->x < (WINDOW_WIDTH - 60)))
+      v->x = 10.0f;
   
-  if((!i->keyRight && !i->keyLeft) || (i->keyRight && i->keyLeft))
+  if(!i->keyRight && !i->keyLeft)
     v->x = 0.0f;
 }
 
