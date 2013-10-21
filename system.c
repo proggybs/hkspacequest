@@ -15,23 +15,49 @@ void runSystem(System *system, World *world)
 void renderFunction(World *world, unsigned int entity)
 {
   Position *p = &(world->position[entity]);
-  Sprite *s = &(world->sprite[entity]);
+  /*Sprite *s = &(world->sprite[entity]);*/
 
-  glBindTexture(GL_TEXTURE_2D, s->texture);
-  glEnable(GL_TEXTURE_2D);
+  /*
+    glBindTexture(GL_TEXTURE_2D, s->texture);
+    glEnable(GL_TEXTURE_2D);
+    glTexCoord2i(0, 0);
+  */
   glPushMatrix();
-  glColor3f(1.0, 1.0, 1.0);
   glBegin(GL_QUADS);
-  glTexCoord2i(0, 0);
-  glVertex3f(p->x, p->y, 0);
-  glTexCoord2i(1, 0);
-  glVertex3f(p->x + p->w, p->y, 0);
-  glTexCoord2i(1, 1);
-  glVertex3f(p->x + p->w, p->y + p->h, 0);
-  glTexCoord2i(0, 1);
-  glVertex3f(p->x, p->y + p->h, 0);
+    glColor3f(1.0, 1.0, 0.5);
+  glVertex2f(p->x, p->y);
+    glColor3f(1.0, 0.5, 1.0);
+  glVertex2f(p->x + p->w, p->y);
+    glColor3f(0.5, 1.0, 1.0);
+  glVertex2f(p->x + p->w, p->y + p->h);
+    glColor3f(0.5, 0.5, 0.5);
+  glVertex2f(p->x, p->y + p->h);
   glEnd();
-  glDisable(GL_TEXTURE_2D );
+  /*glDisable(GL_TEXTURE_2D );*/
   glPopMatrix();
   glFlush();
+}
+
+void playerControlFunction(World *world, unsigned int entity)
+{
+  Input *i = &(world->input[entity]);
+  Velocity *v = &(world->velocity[entity]);
+
+  if(i->keyLeft)
+    v->x = -10.0f;
+  
+  if(i->keyRight)
+    v->x = 10.0f;
+  
+  if((!i->keyRight && !i->keyLeft) || (i->keyRight && i->keyLeft))
+    v->x = 0.0f;
+}
+
+void movementFunction(World *world, unsigned int entity)
+{
+  Position *p = &(world->position[entity]);
+  Velocity *v = &(world->velocity[entity]);
+
+  p->x += v->x;
+  p->y += v->y;
 }

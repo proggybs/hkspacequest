@@ -4,6 +4,7 @@ const unsigned int COMPONENT_NONE = 0;
 const unsigned int COMPONENT_POSITION = 1;
 const unsigned int COMPONENT_VELOCITY = 2;
 const unsigned int COMPONENT_SPRITE = 3;
+const unsigned int COMPONENT_INPUT = 4;
 
 unsigned int checkMask(unsigned int (*sm)[], unsigned int msize, unsigned int (*em)[COMPONENT_COUNT])
 {

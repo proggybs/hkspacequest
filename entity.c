@@ -37,6 +37,7 @@ unsigned int createHKShip(World *world, float x, float y, float w, float h, floa
   setMask(&world->mask[entity], COMPONENT_POSITION, COMPONENT_ENABLED);
   setMask(&world->mask[entity], COMPONENT_VELOCITY, COMPONENT_ENABLED);
   setMask(&world->mask[entity], COMPONENT_SPRITE, COMPONENT_ENABLED);
+  setMask(&world->mask[entity], COMPONENT_INPUT, COMPONENT_ENABLED);
 
   world->position[entity].x = x;
   world->position[entity].y = y;
@@ -46,7 +47,11 @@ unsigned int createHKShip(World *world, float x, float y, float w, float h, floa
   world->velocity[entity].x = vx;
   world->velocity[entity].y = vy;
 
-  world->sprite[entity].texture = loadTexture(filename);
+  //world->sprite[entity].texture = loadTexture(filename);
+
+  world->input[entity].keyLeft = 0;
+  world->input[entity].keyRight = 0;
+  world->input[entity].keyFire = 0;
 
   return entity;
 }

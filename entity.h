@@ -12,6 +12,7 @@ typedef struct
   Position position[ENTITY_COUNT];
   Velocity velocity[ENTITY_COUNT];
   Sprite sprite[ENTITY_COUNT];
+  Input input[ENTITY_COUNT];
 } World;
 
 unsigned int createEntity(World *world);
