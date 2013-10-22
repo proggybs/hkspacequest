@@ -206,3 +206,17 @@ void moveAIFunction(World *world, unsigned int entity)
     break;
   }
 }
+
+void fireAIFunction(World *world, unsigned int entity)
+{
+  Position *p = &(world->position[entity]);
+  FireDelay *fd = &(world->fireDelay[entity]);
+
+  srand(SDL_GetTicks() + entity);
+  int random = rand() % 100 + 1;
+  if(random == 1 && fd->timeSinceFired < (SDL_GetTicks() - fd->delay))
+  {
+    createBlaster(world, p->x, p->y + p->h + 10, 10.0f, 20.0f, 0.0f, 10.0f, 60); 
+    fd->timeSinceFired = SDL_GetTicks();
+  }
+}

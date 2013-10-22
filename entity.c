@@ -97,6 +97,9 @@ unsigned int createDrone(World *world, float x, float y, float w, float h, float
   world->ai[entity].moveCount = 0;
   world->ai[entity].moveSpeed = 5;
   world->ai[entity].moveMax = 20;
+  
+  world->fireDelay[entity].timeSinceFired = 0;
+  world->fireDelay[entity].delay = 2000;
 
   return entity;
 }

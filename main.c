@@ -106,7 +106,7 @@ int main(void)
   Uint8 *keys = SDL_GetKeyState(NULL);
 
   World world;
-  System render, player, movement, maxDuration, collision, aiMove;
+  System render, player, movement, maxDuration, collision, aiMove, aiFire;
 
   memset(&world, 0, sizeof(world));
   initializeWorld(&world);
@@ -153,6 +153,11 @@ int main(void)
   aiMove.function = &moveAIFunction;
   memcpy(&aiMove.mask, &aiMoveComps, sizeof(aiMoveComps));
   
+  unsigned int aiFireComps[3] = {COMPONENT_POSITION, COMPONENT_FIRE_DELAY, COMPONENT_AI};
+  aiFire.maskCount = 3;
+  aiFire.function = &fireAIFunction;
+  memcpy(&aiFire.mask, &aiFireComps, sizeof(aiFireComps));
+  
   Uint32 start;
   Uint32 last = 1;
   while(isRunning)
@@ -165,6 +170,7 @@ int main(void)
     runSystem(&player, &world);
     runSystem(&aiMove, &world);
     runSystem(&movement, &world);
+    runSystem(&aiFire, &world);
     
     runSystem(&collision, &world);
     glClear(GL_COLOR_BUFFER_BIT);
