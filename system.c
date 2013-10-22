@@ -129,7 +129,7 @@ void moveAIFunction(World *world, unsigned int entity)
   Velocity *v = &(world->velocity[entity]);
   AI *ai = &(world->ai[entity]);
 
-  srand(SDL_GetTicks());
+  srand(SDL_GetTicks() + entity);
   int randRoll = rand() % 100 + 1;
   if(v->x == 0 && v->y == 0 && (randRoll == 1)) // Not Moving
   {

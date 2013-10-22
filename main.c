@@ -114,6 +114,9 @@ int main(void)
   unsigned int hkship = createHKShip(&world, (WINDOW_WIDTH/2 - 25), (WINDOW_HEIGHT - 60), 50.0f, 40.0f, 0.0f, 0.0f, "hkship1.png");
   createDrone(&world, (WINDOW_WIDTH/2 - 25), 60, 20.0f, 20.0f, 0.0f, 0.0f);
   createDrone(&world, (WINDOW_WIDTH/2 - 25), 240, 20.0f, 20.0f, 0.0f, 0.0f);
+  createDrone(&world, (WINDOW_WIDTH/2 - 100), 60, 20.0f, 20.0f, 0.0f, 0.0f);
+  createDrone(&world, (WINDOW_WIDTH/2 - 100), 240, 20.0f, 20.0f, 0.0f, 0.0f);
+  createDrone(&world, (WINDOW_WIDTH/2 - 76), 80, 20.0f, 20.0f, 0.0f, 0.0f);
 
   unsigned int renderComps[2] = {COMPONENT_POSITION, COMPONENT_SPRITE};
   render.maskCount = 2;
