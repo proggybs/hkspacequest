@@ -16,6 +16,7 @@ typedef struct
   MaxDuration maxDuration[ENTITY_COUNT];
   Collision collision[ENTITY_COUNT];
   AI ai[ENTITY_COUNT];
+  FireDelay fireDelay[ENTITY_COUNT];
 } World;
 
 unsigned int createEntity(World *world);

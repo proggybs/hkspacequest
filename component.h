@@ -3,7 +3,7 @@
 
 #include <GL/gl.h>
 
-#define COMPONENT_COUNT 8
+#define COMPONENT_COUNT 9
 #define COMPONENT_ENABLED 1 
 #define COMPONENT_DISABLED 0 
 
@@ -15,6 +15,7 @@ const unsigned int COMPONENT_INPUT;
 const unsigned int COMPONENT_MAX_DURATION;
 const unsigned int COMPONENT_COLLISION;
 const unsigned int COMPONENT_AI;
+const unsigned int COMPONENT_FIRE_DELAY;
 
 typedef struct
 {
@@ -59,5 +60,11 @@ typedef struct
   int doMove;
   int doShoot;
 } AI;
+
+typedef struct
+{
+  unsigned int timeSinceFired;
+  unsigned int delay;
+} FireDelay;
 
 #endif

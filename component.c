@@ -9,3 +9,4 @@ const unsigned int COMPONENT_INPUT = 4;
 const unsigned int COMPONENT_MAX_DURATION = 5;
 const unsigned int COMPONENT_COLLISION = 6;
 const unsigned int COMPONENT_AI = 7;
+const unsigned int COMPONENT_FIRE_DELAY = 8;

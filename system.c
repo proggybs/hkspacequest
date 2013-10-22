@@ -3,6 +3,7 @@
 #include "component.h"
 #include "entity.h"
 #include <GL/gl.h>
+#include <SDL/SDL.h>
 #include <stdio.h>
 
 void runSystem(System *system, World *world)
@@ -52,6 +53,7 @@ void playerControlFunction(World *world, unsigned int entity)
   Input *i = &(world->input[entity]);
   Position *p = &(world->position[entity]);
   Velocity *v = &(world->velocity[entity]);
+  FireDelay *fd = &(world->fireDelay[entity]);
 
   v->x = 0.0f;
 
@@ -64,8 +66,11 @@ void playerControlFunction(World *world, unsigned int entity)
   if(!i->keyRight && !i->keyLeft)
     v->x = 0.0f;
 
-  if(i->keyFire)
+  if(i->keyFire && (fd->timeSinceFired < (SDL_GetTicks() - fd->delay)))
+  {
     createBlaster(world, p->x, p->y - 20, 10.0f, 20.0f, 0.0f, -10.0f, 60); 
+    fd->timeSinceFired = SDL_GetTicks();
+  }
 }
 
 void movementFunction(World *world, unsigned int entity)

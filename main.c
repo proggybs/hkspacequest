@@ -119,8 +119,8 @@ int main(void)
   render.function = &renderFunction;
   memcpy(&render.mask, &renderComps, sizeof(renderComps)); 
 
-  unsigned int playerComps[3] = {COMPONENT_INPUT, COMPONENT_POSITION, COMPONENT_VELOCITY};
-  player.maskCount = 3;
+  unsigned int playerComps[4] = {COMPONENT_INPUT, COMPONENT_POSITION, COMPONENT_VELOCITY, COMPONENT_FIRE_DELAY};
+  player.maskCount = 4;
   player.function = &playerControlFunction;
   memcpy(&player.mask, &playerComps, sizeof(playerComps));
 

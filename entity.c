@@ -51,6 +51,7 @@ unsigned int createHKShip(World *world, float x, float y, float w, float h, floa
   world->mask[entity][COMPONENT_SPRITE] = COMPONENT_ENABLED;
   world->mask[entity][COMPONENT_INPUT] = COMPONENT_ENABLED;
   world->mask[entity][COMPONENT_COLLISION] = COMPONENT_ENABLED;
+  world->mask[entity][COMPONENT_FIRE_DELAY] = COMPONENT_ENABLED;
 
   world->position[entity].x = x;
   world->position[entity].y = y;
@@ -66,6 +67,9 @@ unsigned int createHKShip(World *world, float x, float y, float w, float h, floa
 
   world->sprite[entity].texture = 1;
 
+  world->fireDelay[entity].timeSinceFired = 0;
+  world->fireDelay[entity].delay = 500;
+
   return entity;
 }
 
@@ -78,6 +82,7 @@ unsigned int createDrone(World *world, float x, float y, float w, float h, float
   world->mask[entity][COMPONENT_SPRITE] = COMPONENT_ENABLED;
   world->mask[entity][COMPONENT_COLLISION] = COMPONENT_ENABLED;
   world->mask[entity][COMPONENT_AI] = COMPONENT_ENABLED;
+  world->mask[entity][COMPONENT_FIRE_DELAY] = COMPONENT_ENABLED;
   
   world->position[entity].x = x;
   world->position[entity].y = y;
