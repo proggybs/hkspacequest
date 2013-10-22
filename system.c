@@ -154,7 +154,7 @@ void moveAIFunction(World *world, unsigned int entity)
       v->y -= ai->moveSpeed;
     else if(direction == 4) // Right
       v->x += ai->moveSpeed;
-    
+
     ai->moveDuration = rand() % ai->moveMax + 5;
     ai->moveCount = 1;
   }  
@@ -175,5 +175,34 @@ void moveAIFunction(World *world, unsigned int entity)
 
       ai->moveCount++;
     }
+  }
+
+  for(unsigned int e2 = 0; e2 < ENTITY_COUNT; ++e2)
+  {
+    if(e2 == entity)
+      continue;
+    if(!(world->mask[e2][COMPONENT_AI] & COMPONENT_ENABLED))
+      continue;
+
+
+    Position *p2 = &(world->position[e2]);
+
+    float bottom1 = (p->y + v->y) + p->h;
+    float bottom2 = p2->y + p2->h;
+    float top1 = p->y + v->y;
+    float top2 = p2->y;
+    float left1 = p->x + v->x;
+    float left2 = p2->x;
+    float right1 = (p->x + v->x) + p->w;
+    float right2 = p2->x + p2->w;
+
+    if (bottom1 < top2) continue;
+    if (top1 > bottom2) continue;
+    if (right1 < left2) continue;
+    if (left1 > right2) continue;
+
+    v->x = 0;
+    v->y = 0;
+    break;
   }
 }

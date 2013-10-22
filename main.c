@@ -117,6 +117,11 @@ int main(void)
   createDrone(&world, (WINDOW_WIDTH/2 - 100), 60, 20.0f, 20.0f, 0.0f, 0.0f);
   createDrone(&world, (WINDOW_WIDTH/2 - 100), 240, 20.0f, 20.0f, 0.0f, 0.0f);
   createDrone(&world, (WINDOW_WIDTH/2 - 76), 80, 20.0f, 20.0f, 0.0f, 0.0f);
+  createDrone(&world, 76, 400, 20.0f, 20.0f, 0.0f, 0.0f);
+  createDrone(&world, 700, 280, 20.0f, 20.0f, 0.0f, 0.0f);
+  createDrone(&world, 300, 180, 20.0f, 20.0f, 0.0f, 0.0f);
+  createDrone(&world, 156, 230, 20.0f, 20.0f, 0.0f, 0.0f);
+  createDrone(&world, 0, 80, 20.0f, 20.0f, 0.0f, 0.0f);
 
   unsigned int renderComps[2] = {COMPONENT_POSITION, COMPONENT_SPRITE};
   render.maskCount = 2;
