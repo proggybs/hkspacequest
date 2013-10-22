@@ -25,6 +25,10 @@ void runGameEvents(int *isRunning)
       case SDL_QUIT:
         *isRunning = 0;
         break;
+      case SDL_KEYDOWN:
+        if(event.key.keysym.sym == SDLK_ESCAPE)
+          *isRunning = 0;
+        break;
       default:
         break;
     }
@@ -99,7 +103,7 @@ int main(void)
 {
   SDL_Init(SDL_INIT_EVERYTHING);
   TTF_Init();
-  SDL_Surface *screen = SDL_SetVideoMode(WINDOW_WIDTH, WINDOW_HEIGHT, 32, SDL_SWSURFACE|SDL_OPENGL);
+  SDL_Surface *screen = SDL_SetVideoMode(WINDOW_WIDTH, WINDOW_HEIGHT, 32, SDL_SWSURFACE|SDL_DOUBLEBUF|SDL_OPENGL);
   glInit();
 
   int isRunning = 1;
@@ -186,6 +190,7 @@ int main(void)
     last = (SDL_GetTicks() - start);
   }
 
+  SDL_FreeSurface(screen);
   TTF_Quit();
   SDL_Quit();
   return 0;
