@@ -3,7 +3,7 @@
 
 #include "component.h"
 
-#define ENTITY_COUNT 10
+#define ENTITY_COUNT 100
 
 typedef struct
 {

@@ -46,9 +46,4 @@ typedef struct
   int max;
 } MaxDuration;
 
-unsigned int getMask(unsigned int (*em)[COMPONENT_COUNT], unsigned int mask);
-void setMask(unsigned int (*em)[COMPONENT_COUNT], unsigned int mask, unsigned int enabled);
-void resetMask(unsigned int (*em)[COMPONENT_COUNT]);
-unsigned int checkMask(unsigned int (*sm)[], unsigned int msize, unsigned int (*em)[COMPONENT_COUNT]);
-
 #endif

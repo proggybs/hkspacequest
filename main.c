@@ -118,11 +118,6 @@ int main(void)
   render.maskCount = 2;
   render.function = &renderFunction;
   memcpy(&render.mask, &renderComps, sizeof(renderComps)); 
-  printf("0 -> %i\n", render.mask[0]);
-  printf("1 -> %i\n", render.mask[1]);
-  
-  printf("pos -> %i\n", (world.mask[hkship][COMPONENT_POSITION] & render.mask[0]) == render.mask[0]);
-  printf("pos -> %i\n", world.mask[hkship][COMPONENT_SPRITE] & render.mask[1]);
 
   unsigned int playerComps[3] = {COMPONENT_INPUT, COMPONENT_POSITION, COMPONENT_VELOCITY};
   player.maskCount = 3;
@@ -156,8 +151,8 @@ int main(void)
     char temp[8];
     sprintf(temp, "FPS: %d", (1000/last) ); 
     drawFont(temp);
-    SDL_GL_SwapBuffers();
     runSystem(&maxDuration, &world);
+    SDL_GL_SwapBuffers();
 
     if(1000/60 > (SDL_GetTicks() - start))
       SDL_Delay(1000/60 - (SDL_GetTicks() - start));

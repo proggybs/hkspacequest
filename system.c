@@ -65,7 +65,7 @@ void playerControlFunction(World *world, unsigned int entity)
     v->x = 0.0f;
 
   if(i->keyFire)
-    createBlaster(world, p->x, p->y - 20, 10.0f, 20.0f, 0.0f, -10.0f, 4); 
+    createBlaster(world, p->x, p->y - 20, 10.0f, 20.0f, 0.0f, -10.0f, 60); 
 }
 
 void movementFunction(World *world, unsigned int entity)
@@ -80,9 +80,9 @@ void movementFunction(World *world, unsigned int entity)
 
 void maxDurationFunction(World *world, unsigned int entity)
 {
-  puts("called!");
   MaxDuration *md = &(world->maxDuration[entity]);
 
+  md->current++;
   if(md->current >= md->max)
     destroyEntity(world, entity);
 }

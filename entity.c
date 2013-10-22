@@ -9,10 +9,9 @@ unsigned int createEntity(World *world)
 
   for(entity = 0; entity < ENTITY_COUNT; ++entity)
   {
-    if(getMask(&world->mask[entity], COMPONENT_NONE))
+    if(world->mask[entity][COMPONENT_NONE] & COMPONENT_ENABLED)
     {
-      setMask(&world->mask[entity], COMPONENT_NONE, COMPONENT_DISABLED);
-      printf("created entity %i\n", entity);
+      world->mask[entity][COMPONENT_NONE] = COMPONENT_DISABLED;
       return entity;
     }
   }
@@ -72,9 +71,10 @@ unsigned int createBlaster(World *world, float x, float y, float w, float h, flo
 {
   unsigned int entity = createEntity(world);
 
-  setMask(&world->mask[entity], COMPONENT_POSITION, COMPONENT_ENABLED);
-  setMask(&world->mask[entity], COMPONENT_VELOCITY, COMPONENT_ENABLED);
-  setMask(&world->mask[entity], COMPONENT_SPRITE, COMPONENT_ENABLED);
+  world->mask[entity][COMPONENT_POSITION] = COMPONENT_ENABLED;
+  world->mask[entity][COMPONENT_VELOCITY] = COMPONENT_ENABLED;
+  world->mask[entity][COMPONENT_SPRITE] = COMPONENT_ENABLED;
+  world->mask[entity][COMPONENT_MAX_DURATION] = COMPONENT_ENABLED;
 
   world->position[entity].x = x;
   world->position[entity].y = y;
