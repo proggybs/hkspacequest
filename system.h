@@ -8,9 +8,9 @@ typedef void (* SystemFunction)(World *world, unsigned int entity);
 
 typedef struct
 {
-  unsigned int maskCount;
   SystemFunction function;
-  unsigned int mask[];
+  int maskCount;
+  unsigned int mask[COMPONENT_COUNT];
 } System;
 
 void runSystem(System *system, World *world);

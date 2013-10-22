@@ -4,8 +4,8 @@
 #include <GL/gl.h>
 
 #define COMPONENT_COUNT 6
-const unsigned int COMPONENT_ENABLED; 
-const unsigned int COMPONENT_DISABLED; 
+#define COMPONENT_ENABLED 1 
+#define COMPONENT_DISABLED 0 
 
 const unsigned int COMPONENT_NONE;
 const unsigned int COMPONENT_POSITION;
@@ -13,8 +13,6 @@ const unsigned int COMPONENT_VELOCITY;
 const unsigned int COMPONENT_SPRITE;
 const unsigned int COMPONENT_INPUT;
 const unsigned int COMPONENT_MAX_DURATION;
-
-unsigned int SystemMask[COMPONENT_COUNT];
 
 typedef struct
 {

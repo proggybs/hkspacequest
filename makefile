@@ -4,3 +4,6 @@ SRCS=main.c component.c entity.c system.c texture.c
 
 game:
 	gcc $(OPTS) -o hkspacequest $(SRCS) $(LDLIBS)
+
+debug: 
+	gcc $(OPTS) -o hkspacequest_dbg -g $(SRCS) $(LDLIBS)

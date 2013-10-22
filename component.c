@@ -1,9 +1,6 @@
 #include "component.h"
 #include <stdio.h>
 
-const unsigned int COMPONENT_ENABLED = 1; 
-const unsigned int COMPONENT_DISABLED = 0;
-
 const unsigned int COMPONENT_NONE = 0;
 const unsigned int COMPONENT_POSITION = 1;
 const unsigned int COMPONENT_VELOCITY = 2;
@@ -15,7 +12,7 @@ unsigned int checkMask(unsigned int (*sm)[], unsigned int msize, unsigned int (*
 {
   for(unsigned int x = 0; x < msize; ++x)
   {
-    if((*em)[(*sm)[x]] == COMPONENT_DISABLED)
+    if((*em)[(*sm)[x]] & COMPONENT_DISABLED)
       return 0;
   }
 
@@ -30,14 +27,4 @@ unsigned int getMask(unsigned int (*em)[COMPONENT_COUNT], unsigned int mask)
 void setMask(unsigned int (*em)[COMPONENT_COUNT], unsigned int mask, unsigned int enabled)
 {
   (*em)[mask] = enabled;
-}
-
-void resetMask(unsigned int (*em)[COMPONENT_COUNT])
-{
-  puts("resetting mask\n");
-  for(int x = 1; x < COMPONENT_COUNT; ++x)
-    (*em)[x] = COMPONENT_DISABLED;
-
-  (*em)[COMPONENT_NONE] = COMPONENT_ENABLED;
-  printf("reset complete %i\n", (*em)[COMPONENT_NONE]);
 }
