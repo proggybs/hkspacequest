@@ -30,7 +30,7 @@ void runSystem(System *system, World *world)
 
 void renderFunction(World *world, unsigned int entity)
 {
-  Position *p = &(world->position[entity]);
+:x
 
   glPushMatrix();
   glBegin(GL_QUADS);
@@ -85,4 +85,35 @@ void maxDurationFunction(World *world, unsigned int entity)
   md->current++;
   if(md->current >= md->max)
     destroyEntity(world, entity);
+}
+
+void collisionFunction(World *world, unsigned int entity)
+{
+  Position *p = &(world->position[entity]);
+
+  unsigned int e2;
+  for(e2 = 0; e2 < ENTITY_COUNT; ++e2)
+  {
+    if(entity != e2 && (world->mask[e2][COMPONENT_COLLISION] & COMPONENT_ENABLED))
+    {
+      Position *p2 = &(world->position[e2]);
+
+      float bottom1 = p->y + p->h;
+      float bottom2 = p2->y + p2->h;
+      float top1 = p->y;
+      float top2 = p2->y;
+      float left1 = p->x;
+      float left2 = p2->x;
+      float right1 = p->x + p->w;
+      float right2 = p2->x + p2->w;
+
+      if (bottom1 < top2) continue;
+      if (top1 > bottom2) continue;
+      if (right1 < left2) continue;
+      if (left1 > right2) continue;
+
+      destroyEntity(world, entity);
+      destroyEntity(world, e2);
+    }
+  }
 }

@@ -7,3 +7,4 @@ const unsigned int COMPONENT_VELOCITY = 2;
 const unsigned int COMPONENT_SPRITE = 3;
 const unsigned int COMPONENT_INPUT = 4;
 const unsigned int COMPONENT_MAX_DURATION = 5;
+const unsigned int COMPONENT_COLLISION = 6;

@@ -49,6 +49,7 @@ unsigned int createHKShip(World *world, float x, float y, float w, float h, floa
   world->mask[entity][COMPONENT_VELOCITY] = COMPONENT_ENABLED;
   world->mask[entity][COMPONENT_SPRITE] = COMPONENT_ENABLED;
   world->mask[entity][COMPONENT_INPUT] = COMPONENT_ENABLED;
+  world->mask[entity][COMPONENT_COLLISION] = COMPONENT_ENABLED;
 
   world->position[entity].x = x;
   world->position[entity].y = y;
@@ -67,6 +68,26 @@ unsigned int createHKShip(World *world, float x, float y, float w, float h, floa
   return entity;
 }
 
+unsigned int createDrone(World *world, float x, float y, float w, float h, float vx, float vy)
+{
+  unsigned int entity = createEntity(world);
+
+  world->mask[entity][COMPONENT_POSITION] = COMPONENT_ENABLED;
+  world->mask[entity][COMPONENT_VELOCITY] = COMPONENT_ENABLED;
+  world->mask[entity][COMPONENT_SPRITE] = COMPONENT_ENABLED;
+  world->mask[entity][COMPONENT_COLLISION] = COMPONENT_ENABLED;
+  
+  world->position[entity].x = x;
+  world->position[entity].y = y;
+  world->position[entity].w = w;
+  world->position[entity].h = h;
+
+  world->velocity[entity].x = vx;
+  world->velocity[entity].y = vy;
+
+  return entity;
+}
+
 unsigned int createBlaster(World *world, float x, float y, float w, float h, float vx, float vy, int maxDuration)
 {
   unsigned int entity = createEntity(world);
@@ -75,6 +96,7 @@ unsigned int createBlaster(World *world, float x, float y, float w, float h, flo
   world->mask[entity][COMPONENT_VELOCITY] = COMPONENT_ENABLED;
   world->mask[entity][COMPONENT_SPRITE] = COMPONENT_ENABLED;
   world->mask[entity][COMPONENT_MAX_DURATION] = COMPONENT_ENABLED;
+  world->mask[entity][COMPONENT_COLLISION] = COMPONENT_ENABLED;
 
   world->position[entity].x = x;
   world->position[entity].y = y;

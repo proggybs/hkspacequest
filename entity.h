@@ -14,6 +14,7 @@ typedef struct
   Sprite sprite[ENTITY_COUNT];
   Input input[ENTITY_COUNT];
   MaxDuration maxDuration[ENTITY_COUNT];
+  Collision collision[ENTITY_COUNT];
 } World;
 
 unsigned int createEntity(World *world);
@@ -22,4 +23,5 @@ void initializeWorld(World *world);
 
 unsigned int createHKShip(World *world, float x, float y, float w, float h, float vx, float vy, char* filename);
 unsigned int createBlaster(World *world, float x, float y, float w, float h, float vx, float vy, int frames);
+unsigned int createDrone(World *world, float x, float y, float w, float h, float vx, float vy);
 #endif

@@ -106,13 +106,13 @@ int main(void)
   Uint8 *keys = SDL_GetKeyState(NULL);
 
   World world;
-  System render, player, movement, maxDuration;
+  System render, player, movement, maxDuration, collision;
 
   memset(&world, 0, sizeof(world));
   initializeWorld(&world);
 
   unsigned int hkship = createHKShip(&world, (WINDOW_WIDTH/2 - 25), (WINDOW_HEIGHT - 60), 50.0f, 40.0f, 0.0f, 0.0f, "hkship1.png");
-
+  createDrone(&world, (WINDOW_WIDTH/2 - 25), 60, 50.0f, 40.0f, 0.0f, 0.0f);
 
   unsigned int renderComps[2] = {COMPONENT_POSITION, COMPONENT_SPRITE};
   render.maskCount = 2;
@@ -134,6 +134,11 @@ int main(void)
   maxDuration.function = &maxDurationFunction;
   memcpy(&maxDuration.mask, &maxDurationComps, sizeof(maxDurationComps));
 
+  unsigned int collisionComps[2] = {COMPONENT_COLLISION, COMPONENT_POSITION};
+  collision.maskCount = 2;
+  collision.function = &collisionFunction;
+  memcpy(&collision.mask, &collisionComps, sizeof(collisionComps));
+  
   Uint32 start;
   Uint32 last = 1;
   while(isRunning)
@@ -146,6 +151,7 @@ int main(void)
     runSystem(&player, &world);
     runSystem(&movement, &world);
     
+    runSystem(&collision, &world);
     glClear(GL_COLOR_BUFFER_BIT);
     runSystem(&render, &world);
     char temp[8];
