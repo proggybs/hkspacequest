@@ -2,6 +2,7 @@
 #include "stdio.h"
 #include "texture.h"
 #include "settings.h"
+#include <SDL/SDL.h>
 
 unsigned int createEntity(World *world)
 {
@@ -76,6 +77,7 @@ unsigned int createDrone(World *world, float x, float y, float w, float h, float
   world->mask[entity][COMPONENT_VELOCITY] = COMPONENT_ENABLED;
   world->mask[entity][COMPONENT_SPRITE] = COMPONENT_ENABLED;
   world->mask[entity][COMPONENT_COLLISION] = COMPONENT_ENABLED;
+  world->mask[entity][COMPONENT_AI] = COMPONENT_ENABLED;
   
   world->position[entity].x = x;
   world->position[entity].y = y;
@@ -84,6 +86,10 @@ unsigned int createDrone(World *world, float x, float y, float w, float h, float
 
   world->velocity[entity].x = vx;
   world->velocity[entity].y = vy;
+
+  world->ai[entity].lastMove = SDL_GetTicks();
+  world->ai[entity].doMove = 0;
+  world->ai[entity].doShoot = 0;
 
   return entity;
 }

@@ -30,7 +30,7 @@ void runSystem(System *system, World *world)
 
 void renderFunction(World *world, unsigned int entity)
 {
-:x
+  Position *p = &(world->position[entity]);
 
   glPushMatrix();
   glBegin(GL_QUADS);

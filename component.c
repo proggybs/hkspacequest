@@ -8,3 +8,4 @@ const unsigned int COMPONENT_SPRITE = 3;
 const unsigned int COMPONENT_INPUT = 4;
 const unsigned int COMPONENT_MAX_DURATION = 5;
 const unsigned int COMPONENT_COLLISION = 6;
+const unsigned int COMPONENT_AI = 7;
