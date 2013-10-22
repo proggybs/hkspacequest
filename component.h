@@ -57,8 +57,10 @@ typedef struct
 typedef struct
 {
   int lastMove;
-  int doMove;
-  int doShoot;
+  int moveDuration;
+  int moveCount;
+  int moveSpeed;
+  int moveMax;
 } AI;
 
 typedef struct

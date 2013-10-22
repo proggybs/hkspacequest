@@ -19,4 +19,5 @@ void playerControlFunction(World *world, unsigned int entity);
 void movementFunction(World *world, unsigned int entity);
 void maxDurationFunction(World *world, unsigned int entity);
 void collisionFunction(World *world, unsigned int entity);
+void moveAIFunction(World *world, unsigned int entity);
 #endif

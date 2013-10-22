@@ -122,3 +122,58 @@ void collisionFunction(World *world, unsigned int entity)
     }
   }
 }
+
+void moveAIFunction(World *world, unsigned int entity)
+{
+  Position *p = &(world->position[entity]);
+  Velocity *v = &(world->velocity[entity]);
+  AI *ai = &(world->ai[entity]);
+
+  srand(SDL_GetTicks());
+  int randRoll = rand() % 100 + 1;
+  if(v->x == 0 && v->y == 0 && (randRoll == 1)) // Not Moving
+  {
+    int direction;
+
+    if(p->x < 10)
+      direction = 4;
+    else if(p->x > WINDOW_WIDTH - (10 + p->w))
+      direction = 2;
+    else if(p->y < 10)
+      direction = 1;
+    else if(p->y > WINDOW_HEIGHT - 200)
+      direction = 3;
+    else
+      direction = rand() % 4 + 1;
+
+    if(direction == 1) // Down
+      v->y += ai->moveSpeed;      
+    else if(direction == 2) // Left
+      v->x -= ai->moveSpeed;
+    else if(direction == 3) // Up
+      v->y -= ai->moveSpeed;
+    else if(direction == 4) // Right
+      v->x += ai->moveSpeed;
+    
+    ai->moveDuration = rand() % ai->moveMax + 5;
+    ai->moveCount = 1;
+  }  
+  else
+  {
+    if(ai->moveDuration == ai->moveCount)
+    {
+      v->x = 0;
+      v->y = 0;
+      ai->moveCount = 0;
+    } 
+    else
+    {
+      if((p->x < 10 && v->x < 0) || (p->x > WINDOW_WIDTH - (10 + p->w) && v->x > 0))
+        v->x = 0;
+      else if(((p->y > WINDOW_HEIGHT - 200) && v->y > 0) || (p->y < 10 && v->y < 0))
+        v->y = 0;
+
+      ai->moveCount++;
+    }
+  }
+}

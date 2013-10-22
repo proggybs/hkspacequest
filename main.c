@@ -106,13 +106,14 @@ int main(void)
   Uint8 *keys = SDL_GetKeyState(NULL);
 
   World world;
-  System render, player, movement, maxDuration, collision;
+  System render, player, movement, maxDuration, collision, aiMove;
 
   memset(&world, 0, sizeof(world));
   initializeWorld(&world);
 
   unsigned int hkship = createHKShip(&world, (WINDOW_WIDTH/2 - 25), (WINDOW_HEIGHT - 60), 50.0f, 40.0f, 0.0f, 0.0f, "hkship1.png");
-  createDrone(&world, (WINDOW_WIDTH/2 - 25), 60, 50.0f, 40.0f, 0.0f, 0.0f);
+  createDrone(&world, (WINDOW_WIDTH/2 - 25), 60, 20.0f, 20.0f, 0.0f, 0.0f);
+  createDrone(&world, (WINDOW_WIDTH/2 - 25), 240, 20.0f, 20.0f, 0.0f, 0.0f);
 
   unsigned int renderComps[2] = {COMPONENT_POSITION, COMPONENT_SPRITE};
   render.maskCount = 2;
@@ -139,6 +140,11 @@ int main(void)
   collision.function = &collisionFunction;
   memcpy(&collision.mask, &collisionComps, sizeof(collisionComps));
   
+  unsigned int aiMoveComps[3] = {COMPONENT_POSITION, COMPONENT_VELOCITY, COMPONENT_AI};
+  aiMove.maskCount = 3;
+  aiMove.function = &moveAIFunction;
+  memcpy(&aiMove.mask, &aiMoveComps, sizeof(aiMoveComps));
+  
   Uint32 start;
   Uint32 last = 1;
   while(isRunning)
@@ -149,6 +155,7 @@ int main(void)
     processKeypresses(keys, &world, hkship);
 
     runSystem(&player, &world);
+    runSystem(&aiMove, &world);
     runSystem(&movement, &world);
     
     runSystem(&collision, &world);

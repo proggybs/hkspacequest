@@ -93,8 +93,10 @@ unsigned int createDrone(World *world, float x, float y, float w, float h, float
   world->velocity[entity].y = vy;
 
   world->ai[entity].lastMove = SDL_GetTicks();
-  world->ai[entity].doMove = 0;
-  world->ai[entity].doShoot = 0;
+  world->ai[entity].moveDuration = 0;
+  world->ai[entity].moveCount = 0;
+  world->ai[entity].moveSpeed = 5;
+  world->ai[entity].moveMax = 20;
 
   return entity;
 }
