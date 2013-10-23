@@ -50,7 +50,7 @@ int getFontTexture(char* text)
   int colors = surface->format->BytesPerPixel;
   int format;
   GLuint texture;
-  
+
   if(colors == 4)
   {
     if(surface->format->Rmask == 0x000000ff)
@@ -98,6 +98,59 @@ void drawFont(char* text)
   glFlush();
 }
 
+typedef struct
+{
+  unsigned int entity;
+  int destinations[5];
+  int cd;
+} Drone;
+
+Drone drones[10];
+
+void createDrones(World *world)
+{
+  for(int x = 0; x < 10; ++x)
+  {
+    drones[x].entity = createDumbDrone(world, -20 - (x*25), 500, 20.0f, 20.0f);
+    drones[x].destinations[0] = 200;
+    drones[x].destinations[1] = 100;
+    drones[x].destinations[2] = 200 + (x * 50);
+    drones[x].cd = 0;
+    world->velocity[drones[x].entity].x = 5;
+  }
+}
+void moveDrones(World *world)
+{
+  for(int x = 0; x < 10; ++x)
+  {
+    if(drones[x].cd == 0 && world->position[drones[x].entity].x == drones[x].destinations[0])
+    {
+      world->velocity[drones[x].entity].x = 0;
+      world->velocity[drones[x].entity].y = -5;
+      drones[x].cd = 1;
+    }
+    if(drones[x].cd == 1 && world->position[drones[x].entity].y == drones[x].destinations[1])
+    {
+      world->velocity[drones[x].entity].y = 0;
+      world->velocity[drones[x].entity].x = 5;
+      drones[x].cd = 2;
+    }
+    if(drones[x].cd == 2 && world->position[drones[x].entity].x == drones[x].destinations[2])
+    {
+      world->velocity[drones[x].entity].x = 0;
+      drones[x].cd = 3;
+    }
+  }
+
+  if(drones[9].cd == 3)
+  {
+    for(int x = 0; x < 10; ++x)
+    {
+      world->mask[drones[x].entity][COMPONENT_AI] = COMPONENT_ENABLED;
+      drones[x].cd = 4;
+    }
+  }
+}
 
 int main(void)
 {
@@ -115,18 +168,9 @@ int main(void)
   memset(&world, 0, sizeof(world));
   initializeWorld(&world);
 
-  unsigned int hkship = 0;
-  /*unsigned int hkship = createHKShip(&world, (WINDOW_WIDTH/2 - 25), (WINDOW_HEIGHT - 60), 50.0f, 40.0f, 0.0f, 0.0f, "hkship1.png");*/
-  /*createDrone(&world, (WINDOW_WIDTH/2 - 25), 60, 20.0f, 20.0f, 0.0f, 0.0f);*/
-  /*createDrone(&world, (WINDOW_WIDTH/2 - 25), 240, 20.0f, 20.0f, 0.0f, 0.0f);*/
-  /*createDrone(&world, (WINDOW_WIDTH/2 - 100), 60, 20.0f, 20.0f, 0.0f, 0.0f);*/
-  /*createDrone(&world, (WINDOW_WIDTH/2 - 100), 240, 20.0f, 20.0f, 0.0f, 0.0f);*/
-  /*createDrone(&world, (WINDOW_WIDTH/2 - 76), 80, 20.0f, 20.0f, 0.0f, 0.0f);*/
-  /*createDrone(&world, 76, 400, 20.0f, 20.0f, 0.0f, 0.0f);*/
-  /*createDrone(&world, 700, 280, 20.0f, 20.0f, 0.0f, 0.0f);*/
-  /*createDrone(&world, 300, 180, 20.0f, 20.0f, 0.0f, 0.0f);*/
-  /*createDrone(&world, 156, 230, 20.0f, 20.0f, 0.0f, 0.0f);*/
-  /*createDrone(&world, 0, 80, 20.0f, 20.0f, 0.0f, 0.0f);*/
+  unsigned int hkship = createHKShip(&world, (WINDOW_WIDTH/2 - 25), (WINDOW_HEIGHT - 60), 50.0f, 40.0f, 0.0f, 0.0f, "hkship1.png");
+
+  createDrones(&world);
 
   unsigned int renderComps[2] = {COMPONENT_POSITION, COMPONENT_SPRITE};
   render.maskCount = 2;
@@ -152,7 +196,7 @@ int main(void)
   collision.maskCount = 2;
   collision.function = &collisionDetectionFunction;
   memcpy(&collision.mask, &collisionComps, sizeof(collisionComps));
-  
+
   unsigned int collisionRComps[1] = {COMPONENT_COLLIDABLE};
   collisionR.maskCount = 1;
   collisionR.function = &collisionActionFunction;
@@ -162,12 +206,12 @@ int main(void)
   aiMove.maskCount = 3;
   aiMove.function = &moveAIFunction;
   memcpy(&aiMove.mask, &aiMoveComps, sizeof(aiMoveComps));
-  
+
   unsigned int aiFireComps[3] = {COMPONENT_POSITION, COMPONENT_FIRE_DELAY, COMPONENT_AI};
   aiFire.maskCount = 3;
   aiFire.function = &fireAIFunction;
   memcpy(&aiFire.mask, &aiFireComps, sizeof(aiFireComps));
-  
+
   unsigned int pfcComps[2] = {COMPONENT_PLAYER_FRIENDLY, COMPONENT_COLLIDABLE};
   pfCollision.maskCount = 2;
   pfCollision.function = &playerFriendlyCollisionFunction;
@@ -186,18 +230,18 @@ int main(void)
 
     runGameEvents(&isRunning);
     processKeypresses(keys, &world, hkship);
-
     runSystem(&player, &world);
     runSystem(&aiMove, &world);
     runSystem(&movement, &world);
     runSystem(&aiFire, &world);
-    
+
     runSystem(&collision, &world);
     runSystem(&pfCollision, &world);
     runSystem(&aifCollision, &world);
     runSystem(&collisionR, &world);
     glClear(GL_COLOR_BUFFER_BIT);
     runSystem(&render, &world);
+    moveDrones(&world);
     char temp[8];
     sprintf(temp, "FPS: %d", (1000/last) ); 
     drawFont(temp);

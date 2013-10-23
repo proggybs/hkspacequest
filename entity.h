@@ -26,4 +26,5 @@ unsigned int createHKShip(World *world, float x, float y, float w, float h, floa
 unsigned int createFriendlyBlaster(World *world, float x, float y, float w, float h, float vx, float vy, int frames);
 unsigned int createEnemyBlaster(World *world, float x, float y, float w, float h, float vx, float vy, int frames);
 unsigned int createDrone(World *world, float x, float y, float w, float h, float vx, float vy);
+unsigned int createDumbDrone(World *world, float x, float y, float w, float h);
 #endif

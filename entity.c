@@ -106,6 +106,28 @@ unsigned int createDrone(World *world, float x, float y, float w, float h, float
   return entity;
 }
 
+unsigned int createDumbDrone(World *world, float x, float y, float w, float h)
+{
+  unsigned int entity = createEntity(world);
+
+  world->mask[entity][COMPONENT_POSITION] = COMPONENT_ENABLED;
+  world->mask[entity][COMPONENT_VELOCITY] = COMPONENT_ENABLED;
+  world->mask[entity][COMPONENT_SPRITE] = COMPONENT_ENABLED;
+  world->mask[entity][COMPONENT_COLLIDABLE] = COMPONENT_ENABLED;
+  world->mask[entity][COMPONENT_FIRE_DELAY] = COMPONENT_ENABLED;
+  world->mask[entity][COMPONENT_AI_FRIENDLY] = COMPONENT_ENABLED;
+  
+  world->position[entity].x = x;
+  world->position[entity].y = y;
+  world->position[entity].w = w;
+  world->position[entity].h = h;
+
+  world->ai[entity].moveSpeed = 5;
+  world->ai[entity].moveMax = 20;
+  
+  return entity;
+}
+
 unsigned int createFriendlyBlaster(World *world, float x, float y, float w, float h, float vx, float vy, int maxDuration)
 {
   unsigned int entity = createEntity(world);
