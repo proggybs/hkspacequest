@@ -3,7 +3,8 @@
 
 #include <GL/gl.h>
 
-#define COMPONENT_COUNT 9
+#define ENTITY_COUNT 100
+#define COMPONENT_COUNT 11
 #define COMPONENT_ENABLED 1 
 #define COMPONENT_DISABLED 0 
 
@@ -13,9 +14,11 @@ const unsigned int COMPONENT_VELOCITY;
 const unsigned int COMPONENT_SPRITE;
 const unsigned int COMPONENT_INPUT;
 const unsigned int COMPONENT_MAX_DURATION;
-const unsigned int COMPONENT_COLLISION;
+const unsigned int COMPONENT_COLLIDABLE;
 const unsigned int COMPONENT_AI;
 const unsigned int COMPONENT_FIRE_DELAY;
+const unsigned int COMPONENT_AI_FRIENDLY;
+const unsigned int COMPONENT_PLAYER_FRIENDLY;
 
 typedef struct
 {
@@ -51,8 +54,9 @@ typedef struct
 
 typedef struct
 {
-  unsigned int collidedWith;
-} Collision;
+  unsigned int collisions;
+  unsigned int collision[ENTITY_COUNT];
+} Collidable;
 
 typedef struct
 {

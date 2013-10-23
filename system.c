@@ -68,7 +68,7 @@ void playerControlFunction(World *world, unsigned int entity)
 
   if(i->keyFire && (fd->timeSinceFired < (SDL_GetTicks() - fd->delay)))
   {
-    createBlaster(world, p->x, p->y - 20, 10.0f, 20.0f, 0.0f, -10.0f, 60); 
+    createFriendlyBlaster(world, p->x, p->y - 30, 10.0f, 20.0f, 0.0f, -10.0f, 60); 
     fd->timeSinceFired = SDL_GetTicks();
   }
 }
@@ -92,14 +92,15 @@ void maxDurationFunction(World *world, unsigned int entity)
     destroyEntity(world, entity);
 }
 
-void collisionFunction(World *world, unsigned int entity)
+void collisionDetectionFunction(World *world, unsigned int entity)
 {
   Position *p = &(world->position[entity]);
+  Collidable *c = &(world->collidable[entity]);
 
   unsigned int e2;
   for(e2 = 0; e2 < ENTITY_COUNT; ++e2)
   {
-    if(entity != e2 && (world->mask[e2][COMPONENT_COLLISION] & COMPONENT_ENABLED))
+    if(entity != e2 && (world->mask[e2][COMPONENT_COLLIDABLE] & COMPONENT_ENABLED))
     {
       Position *p2 = &(world->position[e2]);
 
@@ -117,9 +118,25 @@ void collisionFunction(World *world, unsigned int entity)
       if (right1 < left2) continue;
       if (left1 > right2) continue;
 
-      destroyEntity(world, entity);
-      destroyEntity(world, e2);
+      c->collision[c->collisions++] = e2;
     }
+  }
+}
+
+void collisionActionFunction(World *world, unsigned int entity)
+{
+  Collidable *c = &world->collidable[entity];
+
+  if(c->collisions > 0)
+  {
+    for(unsigned int x = 0; x < c->collisions; ++x)
+    {
+      destroyEntity(world, c->collision[x]);
+      c->collision[x] = 0;
+      c->collisions--;
+    }
+
+    destroyEntity(world, entity);
   }
 }
 
@@ -176,35 +193,6 @@ void moveAIFunction(World *world, unsigned int entity)
       ai->moveCount++;
     }
   }
-
-  for(unsigned int e2 = 0; e2 < ENTITY_COUNT; ++e2)
-  {
-    if(e2 == entity)
-      continue;
-    if(!(world->mask[e2][COMPONENT_AI] & COMPONENT_ENABLED))
-      continue;
-
-
-    Position *p2 = &(world->position[e2]);
-
-    float bottom1 = (p->y + v->y) + p->h;
-    float bottom2 = p2->y + p2->h;
-    float top1 = p->y + v->y;
-    float top2 = p2->y;
-    float left1 = p->x + v->x;
-    float left2 = p2->x;
-    float right1 = (p->x + v->x) + p->w;
-    float right2 = p2->x + p2->w;
-
-    if (bottom1 < top2) continue;
-    if (top1 > bottom2) continue;
-    if (right1 < left2) continue;
-    if (left1 > right2) continue;
-
-    v->x = 0;
-    v->y = 0;
-    break;
-  }
 }
 
 void fireAIFunction(World *world, unsigned int entity)
@@ -216,7 +204,47 @@ void fireAIFunction(World *world, unsigned int entity)
   int random = rand() % 100 + 1;
   if(random == 1 && fd->timeSinceFired < (SDL_GetTicks() - fd->delay))
   {
-    createBlaster(world, p->x, p->y + p->h + 10, 10.0f, 20.0f, 0.0f, 10.0f, 60); 
+    createEnemyBlaster(world, p->x, p->y + p->h + 30, 10.0f, 20.0f, 0.0f, 10.0f, 60); 
     fd->timeSinceFired = SDL_GetTicks();
+  }
+}
+
+void playerFriendlyCollisionFunction(World *world, unsigned int entity)
+{
+  Collidable *c = &(world->collidable[entity]);
+
+  for(unsigned int x = 0; x < c->collisions; ++x)
+  {
+    if(entity == c->collision[x]) continue;
+
+    if(world->mask[c->collision[x]][COMPONENT_PLAYER_FRIENDLY] & COMPONENT_ENABLED)
+    {
+      unsigned int i2 = c->collisions;
+      for(unsigned int i = x; i < i2; ++i)
+      {
+        c->collision[x] = c->collision[x+1];
+        c->collisions--;
+      }
+    }
+  }
+}
+
+void aiFriendlyCollisionFunction(World *world, unsigned int entity)
+{
+  Collidable *c = &(world->collidable[entity]);
+
+  for(unsigned int x = 0; x < c->collisions; ++x)
+  {
+    if(entity == c->collision[x]) continue;
+
+    if(world->mask[c->collision[x]][COMPONENT_AI_FRIENDLY] & COMPONENT_ENABLED)
+    {
+      unsigned int i2 = c->collisions;
+      for(unsigned int i = x; i < i2; ++i)
+      {
+        c->collision[x] = c->collision[x+1];
+        c->collisions--;
+      }
+    }
   }
 }

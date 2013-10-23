@@ -3,7 +3,6 @@
 
 #include "component.h"
 
-#define ENTITY_COUNT 100
 
 typedef struct
 {
@@ -14,7 +13,7 @@ typedef struct
   Sprite sprite[ENTITY_COUNT];
   Input input[ENTITY_COUNT];
   MaxDuration maxDuration[ENTITY_COUNT];
-  Collision collision[ENTITY_COUNT];
+  Collidable collidable[ENTITY_COUNT];
   AI ai[ENTITY_COUNT];
   FireDelay fireDelay[ENTITY_COUNT];
 } World;
@@ -24,6 +23,7 @@ void destroyEntity(World *world, unsigned int entity);
 void initializeWorld(World *world);
 
 unsigned int createHKShip(World *world, float x, float y, float w, float h, float vx, float vy, char* filename);
-unsigned int createBlaster(World *world, float x, float y, float w, float h, float vx, float vy, int frames);
+unsigned int createFriendlyBlaster(World *world, float x, float y, float w, float h, float vx, float vy, int frames);
+unsigned int createEnemyBlaster(World *world, float x, float y, float w, float h, float vx, float vy, int frames);
 unsigned int createDrone(World *world, float x, float y, float w, float h, float vx, float vy);
 #endif

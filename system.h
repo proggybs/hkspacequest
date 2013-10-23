@@ -18,7 +18,10 @@ void renderFunction(World *world, unsigned int entity);
 void playerControlFunction(World *world, unsigned int entity);
 void movementFunction(World *world, unsigned int entity);
 void maxDurationFunction(World *world, unsigned int entity);
-void collisionFunction(World *world, unsigned int entity);
+void collisionDetectionFunction(World *world, unsigned int entity);
+void playerFriendlyCollisionFunction(World *world, unsigned int entity);
+void aiFriendlyCollisionFunction(World *world, unsigned int entity);
+void collisionActionFunction(World *world, unsigned int entity);
 void moveAIFunction(World *world, unsigned int entity);
 void fireAIFunction(World *world, unsigned int entity);
 #endif

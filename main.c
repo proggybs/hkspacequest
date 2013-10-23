@@ -110,22 +110,23 @@ int main(void)
   Uint8 *keys = SDL_GetKeyState(NULL);
 
   World world;
-  System render, player, movement, maxDuration, collision, aiMove, aiFire;
+  System render, player, movement, maxDuration, collision, collisionR, pfCollision, aifCollision, aiMove, aiFire;
 
   memset(&world, 0, sizeof(world));
   initializeWorld(&world);
 
-  unsigned int hkship = createHKShip(&world, (WINDOW_WIDTH/2 - 25), (WINDOW_HEIGHT - 60), 50.0f, 40.0f, 0.0f, 0.0f, "hkship1.png");
-  createDrone(&world, (WINDOW_WIDTH/2 - 25), 60, 20.0f, 20.0f, 0.0f, 0.0f);
-  createDrone(&world, (WINDOW_WIDTH/2 - 25), 240, 20.0f, 20.0f, 0.0f, 0.0f);
-  createDrone(&world, (WINDOW_WIDTH/2 - 100), 60, 20.0f, 20.0f, 0.0f, 0.0f);
-  createDrone(&world, (WINDOW_WIDTH/2 - 100), 240, 20.0f, 20.0f, 0.0f, 0.0f);
-  createDrone(&world, (WINDOW_WIDTH/2 - 76), 80, 20.0f, 20.0f, 0.0f, 0.0f);
-  createDrone(&world, 76, 400, 20.0f, 20.0f, 0.0f, 0.0f);
-  createDrone(&world, 700, 280, 20.0f, 20.0f, 0.0f, 0.0f);
-  createDrone(&world, 300, 180, 20.0f, 20.0f, 0.0f, 0.0f);
-  createDrone(&world, 156, 230, 20.0f, 20.0f, 0.0f, 0.0f);
-  createDrone(&world, 0, 80, 20.0f, 20.0f, 0.0f, 0.0f);
+  unsigned int hkship = 0;
+  /*unsigned int hkship = createHKShip(&world, (WINDOW_WIDTH/2 - 25), (WINDOW_HEIGHT - 60), 50.0f, 40.0f, 0.0f, 0.0f, "hkship1.png");*/
+  /*createDrone(&world, (WINDOW_WIDTH/2 - 25), 60, 20.0f, 20.0f, 0.0f, 0.0f);*/
+  /*createDrone(&world, (WINDOW_WIDTH/2 - 25), 240, 20.0f, 20.0f, 0.0f, 0.0f);*/
+  /*createDrone(&world, (WINDOW_WIDTH/2 - 100), 60, 20.0f, 20.0f, 0.0f, 0.0f);*/
+  /*createDrone(&world, (WINDOW_WIDTH/2 - 100), 240, 20.0f, 20.0f, 0.0f, 0.0f);*/
+  /*createDrone(&world, (WINDOW_WIDTH/2 - 76), 80, 20.0f, 20.0f, 0.0f, 0.0f);*/
+  /*createDrone(&world, 76, 400, 20.0f, 20.0f, 0.0f, 0.0f);*/
+  /*createDrone(&world, 700, 280, 20.0f, 20.0f, 0.0f, 0.0f);*/
+  /*createDrone(&world, 300, 180, 20.0f, 20.0f, 0.0f, 0.0f);*/
+  /*createDrone(&world, 156, 230, 20.0f, 20.0f, 0.0f, 0.0f);*/
+  /*createDrone(&world, 0, 80, 20.0f, 20.0f, 0.0f, 0.0f);*/
 
   unsigned int renderComps[2] = {COMPONENT_POSITION, COMPONENT_SPRITE};
   render.maskCount = 2;
@@ -147,11 +148,16 @@ int main(void)
   maxDuration.function = &maxDurationFunction;
   memcpy(&maxDuration.mask, &maxDurationComps, sizeof(maxDurationComps));
 
-  unsigned int collisionComps[2] = {COMPONENT_COLLISION, COMPONENT_POSITION};
+  unsigned int collisionComps[2] = {COMPONENT_COLLIDABLE, COMPONENT_POSITION};
   collision.maskCount = 2;
-  collision.function = &collisionFunction;
+  collision.function = &collisionDetectionFunction;
   memcpy(&collision.mask, &collisionComps, sizeof(collisionComps));
   
+  unsigned int collisionRComps[1] = {COMPONENT_COLLIDABLE};
+  collisionR.maskCount = 1;
+  collisionR.function = &collisionActionFunction;
+  memcpy(&collisionR.mask, &collisionRComps, sizeof(collisionRComps));
+
   unsigned int aiMoveComps[3] = {COMPONENT_POSITION, COMPONENT_VELOCITY, COMPONENT_AI};
   aiMove.maskCount = 3;
   aiMove.function = &moveAIFunction;
@@ -162,6 +168,16 @@ int main(void)
   aiFire.function = &fireAIFunction;
   memcpy(&aiFire.mask, &aiFireComps, sizeof(aiFireComps));
   
+  unsigned int pfcComps[2] = {COMPONENT_PLAYER_FRIENDLY, COMPONENT_COLLIDABLE};
+  pfCollision.maskCount = 2;
+  pfCollision.function = &playerFriendlyCollisionFunction;
+  memcpy(&pfCollision.mask, &pfcComps, sizeof(pfcComps));
+
+  unsigned int aicComps[2] = {COMPONENT_AI_FRIENDLY, COMPONENT_COLLIDABLE};
+  aifCollision.maskCount = 2;
+  aifCollision.function = &aiFriendlyCollisionFunction;
+  memcpy(&aifCollision.mask, &aicComps, sizeof(aicComps));
+
   Uint32 start;
   Uint32 last = 1;
   while(isRunning)
@@ -177,6 +193,9 @@ int main(void)
     runSystem(&aiFire, &world);
     
     runSystem(&collision, &world);
+    runSystem(&pfCollision, &world);
+    runSystem(&aifCollision, &world);
+    runSystem(&collisionR, &world);
     glClear(GL_COLOR_BUFFER_BIT);
     runSystem(&render, &world);
     char temp[8];
